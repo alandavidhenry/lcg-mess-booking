@@ -8,29 +8,38 @@ const catchAsync = require('../utils/catchAsync');
 const Booking = require('../models/booking');
 const bookingSchema = require('../schemas');
 
-// const validateBooking = (req, res, next) => {
-//     const { error } = bookingSchema.validate(req.body);
-//     if (error) {
-//         const msg = error.details.map(el => el.message).join(',')
-//         throw new ExpressError(msg, 400)
-//     } else {
-//         next();
-//     }
-// }
+const validateBooking = (req, res, next) => {
+    const { error } = bookingSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
 
-/* GET new booking page. CREATE */
-router.get('/new', (req, res) => {
-    res.render('bookings/new');
+/* GET new room booking page. CREATE */
+router.get('/new-room', (req, res) => {
+    res.render('bookings/new-room');
 });
 
-/* POST new booking page. CREATE */
-// router.post('/', isLoggedIn, validateBooking, catchAsync(async (req, res, next) => {
-router.post('/', catchAsync(async (req, res, next) => {
+/* POST new room booking page. CREATE */
+// isLoggedIn
+router.post('/', validateBooking, catchAsync(async (req, res, next) => {
     const booking = new Booking(req.body.booking);
     await booking.save();
-    req.flash('success', 'Successfully made a new booking');
-    res.redirect('bookings/new');
-    // res.send(req.body);
+    req.flash('success', 'Successfully made a new room booking');
+    res.redirect('bookings/new-room');
 }));
+
+/* GET new meal booking page. CREATE */
+router.get('/new-meal', (req, res) => {
+    res.render('bookings/new-meal');
+});
+
+/* GET view booking page. CREATE */
+router.get('/view', (req, res) => {
+    res.render('bookings/view');
+});
 
 module.exports = router;

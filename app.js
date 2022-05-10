@@ -75,7 +75,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/bookings', bookingRouter);
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 
 /* 404 for any incorrect page. */
 app.all('*', (req, res, next) => {
